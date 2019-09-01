@@ -8,6 +8,13 @@ public class GamePacman {
     
     //The board object the user will play on 
     private static Board board;
+    
+    //File to load game progress from
+    private static String gameLoadFile;
+    
+    //File to save progress to
+    private static String gameSaveFile;
+
 
 
     public static void main(String[] args) {
@@ -23,6 +30,7 @@ public class GamePacman {
     }
 
     private static void processArgs(String[] args) {
+        boolean sflag = false;
         
         // Arguments must come in pairs
         if((args.length % 2) != 0)
@@ -31,9 +39,28 @@ public class GamePacman {
             System.exit(-1);
         }
         
-        if(!"-s".equals(args[0])) {
-            printUsage();
-            System.exit(-1);
+        //Analyzes the args inputted and designates board size and save states
+        for(int i = 0; i < args.length; i++) {
+            if(args[i].equals("-s")) {
+                boardSize = Integer.parseInt(args[i + 1]);
+                if(boardSize < 3) {
+                    boardSize = DEFAULT_SIZE;
+                }
+                sflag = true;
+            }
+            
+            else if(args[i].equals("-i")) {
+                gameLoadFile = args[i + 1];
+            }
+            
+            else if(args[i].equals("-o")) {
+                gameSaveFile = args[i + 1];
+            }
+        }
+        
+        //If no grid size was indicated, the board is set to the default size
+        if(!sflag) {
+            boardSize = DEFAULT_SIZE;
         }
         
         // Set the board size to the input value, but if input value is less

@@ -64,6 +64,55 @@ public class Board {
         // representations based on visted, ghosts, pacman states
         refreshGrid();
     }
+    
+    public Board(String saveName) throws FileNotFoundException {
+
+        String boardFileLine;
+        FileInputStream fileStream = new FileInputStream(saveName);
+        Scanner file = new Scanner(fileStream);
+
+        // Takes the first int as the grid size and the second int as the score
+        GRID_SIZE = file.nextInt();
+        score = file.nextInt();
+
+        // Advances the scanner to the next line, to the start of the game board
+        file.nextLine();
+
+        grid = new char[GRID_SIZE][GRID_SIZE];
+        visited = new boolean[GRID_SIZE][GRID_SIZE];
+        ghosts = new PacCharacter[4];
+        int rowNum = 0;
+        int ghostNum = 0;
+
+        while (file.hasNext()) {
+            boardFileLine = file.nextLine();
+            for (int i = 0; i < GRID_SIZE; i++) {
+                
+                if(boardFileLine.charAt(i) == '*') {
+                    visited[i][rowNum] = false;
+                }
+                
+                if(boardFileLine.charAt(i) == 'G') {
+                    visited[i][rowNum] = false;
+                    ghosts[ghostNum] = new PacCharacter(i, rowNum, 'G');
+                    ghostNum++;
+                }
+                
+                if(boardFileLine.charAt(i) == 'P') {
+                    visited[i][rowNum] = true;
+                    pacman = new PacCharacter(i, rowNum, 'P');
+                }
+                
+                if(boardFileLine.charAt(i) == ' ') {
+                    visited[i][rowNum] = true;
+                }
+                
+            }
+            rowNum++;
+        }
+        refreshGrid();
+        file.close();
+    }
 
 
     public void setVisited(int x, int y) {

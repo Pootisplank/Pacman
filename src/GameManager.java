@@ -11,10 +11,9 @@ public class GameManager {
     /*
      * GameManager Constructor
      *
-     * Purpose:   Constructs a GameManager to Generate new game
-     * Parameter: int boardSize - Integer player want to set as board size.
+     * Purpose:   Constructs a GameManager to generate new game
+     * Parameter: int boardSize - Integer that player wants to set as board size.
      *            String outputBoard - the filename the Board will be saved as.
-     *            Random random - the Random generator player wanna use.
      *
      */
     GameManager(int boardSize, String outputBoard) throws Exception
@@ -28,7 +27,6 @@ public class GameManager {
      * Purpose:   Constructs a GameManager to Load a saved game.
      * Parameter: String inputBoard - the filename the Board will be inputted.
      *            String outputBoard - the filename the Board will be saved as.
-     *            Random random - the Random generator player wanna use.
      *
      */
     GameManager(String inputBoard, String outputBoard) throws Exception

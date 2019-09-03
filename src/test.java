@@ -1,20 +1,11 @@
-
+import java.io.*;
+import java.util.*;
 public class test {
-    public static void main(String[] args) {
-        Board test = new Board(7);
-        System.out.println(test.toString());
-
-        test.move(Direction.UP);
-        System.out.println(test.toString());
+    public static void main(String[] args) throws IOException {
         
-        test.move(Direction.DOWN);
-        System.out.println(test.toString());
-
-        test.move(Direction.LEFT);
-        System.out.println(test.toString());
+        Board board = new Board("test.txt");
+        System.out.println(board.toString());
         
-        test.move(Direction.DOWN);
-        System.out.println(test.toString());
     }
     
 

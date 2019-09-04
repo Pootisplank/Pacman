@@ -1,4 +1,5 @@
 import java.util.*;
+import java.lang.*;
 import java.io.*;
 
 
@@ -18,7 +19,7 @@ public class GameManager {
      */
     GameManager(int boardSize, String outputBoard) throws Exception
     {
-        Board board = new Board(boardSize);
+        board = new Board(boardSize);
         play();
     }
 
@@ -32,7 +33,7 @@ public class GameManager {
      */
     GameManager(String inputBoard, String outputBoard) throws Exception
     {
-        Board board = new Board(inputBoard);
+        board = new Board(inputBoard);
         
     }
 
@@ -62,21 +63,28 @@ public class GameManager {
      * Return:    void.
      *
      */
-    public void play() throws Exception 
+    public void play() 
     {
-        System.out.println(board.toString());
+        try {
         boolean playing = true;
+        
         String playerKey;
         Scanner playerInput = new Scanner(System.in);
         
+        
+        
         printControls();
+        System.out.println(board.toString());
         
         while(playing) {
+
             if(board.isGameOver()) {
                 System.out.println("Game over!");
                 playing = false;
                 break;
             }
+
+
             playerKey = playerInput.next();
             if(playerKey.equals("w")) {
                 board.move(Direction.UP);
@@ -99,6 +107,10 @@ public class GameManager {
         }
         playerInput.close();
         System.exit(-1);
+        } catch (Exception e) {
+            System.out.println("play()");
+            System.out.println(e.toString());
+        }
     }
 
     /*

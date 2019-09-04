@@ -31,10 +31,10 @@ public class Board {
         int ghostNum = 4;
         int ghostCount = 0;
         score = 0;
-        
+
         //Initialize pacman object
         pacman = new PacCharacter(gridCenter, gridCenter, 'P');
-        
+
         //Creates four ghost objects and sets their locations at the corners of the grid
         ghosts = new PacCharacter[4];
         while (ghostCount < ghostNum) {
@@ -59,10 +59,11 @@ public class Board {
         }
         //Sets Pac-Man's starting location as visited
         setVisited(gridCenter, gridCenter);
-        
+
         // Using the refreshGrid method to set the grid character
         // representations based on visted, ghosts, pacman states
         refreshGrid();
+        
     }
     
     public Board(String saveName) throws FileNotFoundException {
@@ -191,6 +192,9 @@ public class Board {
             else if(direction == Direction.LEFT || direction == Direction.RIGHT) {
                 pacman.setPosition(pacRow, pacCol + direction.getX());
             }          
+            
+            System.out.println(pacman.getRow());
+            System.out.println(pacman.getCol());
                         
             //Move ghosts in the direction that will best decrease their Manhattan distance to pacman
             for(int ghostNum = 0; ghostNum < ghosts.length; ghostNum++) {

@@ -20,7 +20,7 @@ public class GamePacman {
 
 
     public static void main(String[] args) {
-
+        
         processArgs(args);
         
         System.out.println("Welcome to Pac-Man!");
@@ -28,18 +28,25 @@ public class GamePacman {
         //If a load file was specified, create a board based on that file
         if(gameLoadFile != null) {
             try {
-                board = new Board(gameLoadFile);
-            } catch (FileNotFoundException e) {
-                System.out.println("File not Found");
+              GameManager gameManager = new GameManager(gameLoadFile, gameSaveFile);
+              gameManager.play();
+            } catch (Exception e) {
+                System.out.println("File not found");
             }
         }
         
         //If a load file was not provided, create a new board
         else {
-            board = new Board(boardSize);
+            try {
+
+                GameManager gameManager = new GameManager(boardSize, gameSaveFile);
+                System.out.println("It worked");
+
+            } catch (Exception e) {
+                System.out.println("File not found! ");
+            }
         }
         
-        System.out.println(board.toString());
         
 
     }
@@ -47,6 +54,7 @@ public class GamePacman {
     private static void processArgs(String[] args) {
         boolean sflag = false;
         boolean iflag = false;
+        boolean oflag = false;
         
         // Arguments must come in pairs
         if((args.length % 2) != 0)
@@ -75,12 +83,17 @@ public class GamePacman {
             
             else if(args[i].equals("-o")) {
                 gameSaveFile = args[i + 1];
+                oflag = true;
             }
         }
         
         //If no grid size was indicated, the board is set to the default size
         if(!sflag && !iflag) {
             boardSize = DEFAULT_SIZE;
+        }
+        
+        if(!oflag) {
+            gameSaveFile = "PacmanBoard.txt";
         }
         
     }

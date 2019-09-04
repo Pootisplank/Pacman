@@ -18,7 +18,8 @@ public class GameManager {
      */
     GameManager(int boardSize, String outputBoard) throws Exception
     {
-        // TODO
+        Board board = new Board(boardSize);
+        play();
     }
 
     /*
@@ -31,7 +32,8 @@ public class GameManager {
      */
     GameManager(String inputBoard, String outputBoard) throws Exception
     {
-        // TODO
+        Board board = new Board(inputBoard);
+        
     }
 
 
@@ -60,9 +62,43 @@ public class GameManager {
      * Return:    void.
      *
      */
-    public void play() throws Exception
+    public void play() throws Exception 
     {
-        // TODO
+        System.out.println(board.toString());
+        boolean playing = true;
+        String playerKey;
+        Scanner playerInput = new Scanner(System.in);
+        
+        printControls();
+        
+        while(playing) {
+            if(board.isGameOver()) {
+                System.out.println("Game over!");
+                playing = false;
+                break;
+            }
+            playerKey = playerInput.next();
+            if(playerKey.equals("w")) {
+                board.move(Direction.UP);
+            }
+            if(playerKey.equals("s")) {
+                board.move(Direction.DOWN);
+            }
+            if(playerKey.equals("a")) {
+                board.move(Direction.LEFT);
+            }
+            if(playerKey.equals("d")) {
+                board.move(Direction.RIGHT);
+            }
+            if(playerKey.equals("q")) {
+                System.out.println("Quitting, saving game...");
+                playing = false;
+            }
+            board.refreshGrid();
+            System.out.println(board.toString());
+        }
+        playerInput.close();
+        System.exit(-1);
     }
 
     /*

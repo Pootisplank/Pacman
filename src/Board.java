@@ -38,9 +38,9 @@ public class Board {
         //Creates four ghost objects and sets their locations at the corners of the grid
         ghosts = new PacCharacter[4];
         while (ghostCount < ghostNum) {
-            for (int row = 0; row < GRID_SIZE; row = row + (GRID_SIZE - 1)) {
-                for (int col = 0; col < GRID_SIZE; col = col + (GRID_SIZE - 1)) {
-                    ghosts[ghostCount] = new PacCharacter(row, col, 'G');
+            for (int x = 0; x < GRID_SIZE; x = x + (GRID_SIZE - 1)) {
+                for (int y = 0; y < GRID_SIZE; y = y + (GRID_SIZE - 1)) {
+                    ghosts[ghostCount] = new PacCharacter(x, y, 'G');
                     ghostCount++;
                 }
             }
@@ -52,9 +52,9 @@ public class Board {
         //Initialize visited array
         visited = new boolean[GRID_SIZE][GRID_SIZE];
         //Sets all locations on the board as unvisited by Pac-Man at the start
-        for(int row = 0; row < GRID_SIZE; row++) {
-            for(int col = 0; col < GRID_SIZE; col++) {
-                visited[row][col] = false;
+        for(int x = 0; x < GRID_SIZE; x++) {
+            for(int y = 0; y < GRID_SIZE; y++) {
+                visited[x][y] = false;
             }
         }
         //Sets Pac-Man's starting location as visited
@@ -82,34 +82,34 @@ public class Board {
         grid = new char[GRID_SIZE][GRID_SIZE];
         visited = new boolean[GRID_SIZE][GRID_SIZE];
         ghosts = new PacCharacter[4];
-        int rowNum = 0;
+        int y = 0;
         int ghostNum = 0;
 
         while (file.hasNext()) {
             boardFileLine = file.nextLine();
-            for (int i = 0; i < GRID_SIZE; i++) {
+            for (int x = 0; x < GRID_SIZE; x++) {
                 
-                if(boardFileLine.charAt(i) == '*') {
-                    visited[i][rowNum] = false;
+                if(boardFileLine.charAt(x) == '*') {
+                    visited[x][y] = false;
                 }
                 
-                if(boardFileLine.charAt(i) == 'G') {
-                    visited[i][rowNum] = false;
-                    ghosts[ghostNum] = new PacCharacter(i, rowNum, 'G');
+                if(boardFileLine.charAt(x) == 'G') {
+                    visited[x][y] = false;
+                    ghosts[ghostNum] = new PacCharacter(x, y, 'G');
                     ghostNum++;
                 }
                 
-                if(boardFileLine.charAt(i) == 'P') {
-                    visited[i][rowNum] = true;
-                    pacman = new PacCharacter(i, rowNum, 'P');
+                if(boardFileLine.charAt(x) == 'P') {
+                    visited[x][y] = true;
+                    pacman = new PacCharacter(x, y, 'P');
                 }
                 
-                if(boardFileLine.charAt(i) == ' ') {
-                    visited[i][rowNum] = true;
+                if(boardFileLine.charAt(x) == ' ') {
+                    visited[x][y] = true;
                 }
                 
             }
-            rowNum++;
+            y++;
         }
         refreshGrid();
         file.close();
@@ -122,50 +122,50 @@ public class Board {
 
     public void refreshGrid() {
         //Assigns an empty slot to the grid if PacMan has visited it.  Else the slot has a Pac-Dot in it
-        for(int row = 0; row < GRID_SIZE; row++) {
-            for(int col = 0; col < GRID_SIZE; col++) {
-                if(visited[row][col] == true) {
-                    grid[row][col] = ' ';
+        for(int x = 0; x < GRID_SIZE; x++) {
+            for(int y = 0; y < GRID_SIZE; y++) {
+                if(visited[x][y] == true) {
+                    grid[x][y] = ' ';
                 } else {
-                    grid[row][col] = '*';
+                    grid[x][y] = '*';
                 }
             }
         }
         //Sets slots on the grid to 'G' based on current ghost locations
         for(int ghostNum = 0; ghostNum < ghosts.length; ghostNum++) {            
-            grid[ghosts[ghostNum].getRow()][ghosts[ghostNum].getCol()] = ghosts[ghostNum].getAppearance();
+            grid[ghosts[ghostNum].getX()][ghosts[ghostNum].getY()] = ghosts[ghostNum].getAppearance();
         }
         //Sets pacman's location on the grid
-        grid[pacman.getRow()][pacman.getCol()] = pacman.getAppearance();
+        grid[pacman.getX()][pacman.getY()] = pacman.getAppearance();
         
         //Sets a slot to 'X' if there is a game over where pacman and a ghost are in the same slot
         if(isGameOver()) {
-            grid[pacman.getRow()][pacman.getCol()] = 'X';
+            grid[pacman.getX()][pacman.getY()] = 'X';
         }
     }
 
     public boolean canMove(Direction direction) {
         //If pacman is trying to move into the border of the board, it cannot move that direction
         if (direction == Direction.UP) {
-            if (pacman.getRow() == 0) {
+            if (pacman.getY() == 0) {
                 return false;
             }
         }
         
         else if (direction == Direction.DOWN) {
-            if (pacman.getRow() == GRID_SIZE - 1) {
+            if (pacman.getY() == GRID_SIZE - 1) {
                 return false;
             }
         }
 
         else if (direction == Direction.LEFT) {
-            if (pacman.getCol() == 0) {
+            if (pacman.getX() == 0) {
                 return false;
             }
         }
 
-        else if (direction == direction.RIGHT) {
-            if (pacman.getCol() == GRID_SIZE - 1) {
+        else if (direction == Direction.RIGHT) {
+            if (pacman.getX() == GRID_SIZE - 1) {
                 return false;
             }
         }
@@ -176,47 +176,51 @@ public class Board {
         //Only moves the characters if a valid direction is entered
         if(canMove(direction) == true) {
             //Store the position of pacman before he moves
-            int pacRow = pacman.getRow();
-            int pacCol = pacman.getCol();
+            int pacX = pacman.getX();
+            int pacY = pacman.getY();
             
             //Declare variables for the positions of ghosts before movement
             Direction ghostDirection;
-            int ghostRow;
-            int ghostCol;
+            int ghostX;
+            int ghostY;
             
             //Move pacman up or down depending on the user input
             if(direction == Direction.UP || direction == Direction.DOWN) {
-                pacman.setPosition(pacRow + direction.getY(), pacCol);
+                pacman.setPosition(pacX, pacY + direction.getY());
             }
             //Move pacman left or right depending on the user input
             else if(direction == Direction.LEFT || direction == Direction.RIGHT) {
-                pacman.setPosition(pacRow, pacCol + direction.getX());
+                pacman.setPosition(pacX + direction.getX(), pacY);
             }          
             
-            System.out.println(pacman.getRow());
-            System.out.println(pacman.getCol());
+            System.out.println(pacman.getX());
+            System.out.println(pacman.getY());
+            
+            System.out.println();
+
+            
                         
             //Move ghosts in the direction that will best decrease their Manhattan distance to pacman
             for(int ghostNum = 0; ghostNum < ghosts.length; ghostNum++) {
-                ghostRow = ghosts[ghostNum].getRow();
-                ghostCol = ghosts[ghostNum].getCol();
+                ghostX = ghosts[ghostNum].getX();
+                ghostY = ghosts[ghostNum].getY();
                 
                 ghostDirection = ghostMove(ghosts[ghostNum]);
                 
                 if(ghostDirection == Direction.UP || ghostDirection == Direction.DOWN) {
-                    ghosts[ghostNum].setPosition(ghostRow + ghostDirection.getY(), ghostCol);
+                    ghosts[ghostNum].setPosition(ghostX, ghostY + ghostDirection.getY());
                 }
                 else if(ghostDirection == Direction.LEFT || ghostDirection == Direction.RIGHT) {
-                    ghosts[ghostNum].setPosition(ghostRow, ghostCol + ghostDirection.getX());
+                    ghosts[ghostNum].setPosition(ghostX + ghostDirection.getX(), ghostY);
                 }
             }
             
             //Adds to the score if pacman consumes a pac-dot
             if(isGameOver() != true) {
-                if(visited[pacman.getRow()][pacman.getCol()] == false) {
+                if(visited[pacman.getX()][pacman.getY()] == false) {
                     score += 10;
                 }
-                setVisited(pacman.getRow(), pacman.getCol());
+                setVisited(pacman.getX(), pacman.getY());
             }
             
             //Refreshes the grid after pacman and ghosts have moved
@@ -227,8 +231,8 @@ public class Board {
     public boolean isGameOver() {
         //If pacman has the same row or column as any ghost, it is game over
         for(int ghostNum = 0; ghostNum < ghosts.length; ghostNum++) {
-            if (pacman.getRow() == ghosts[ghostNum].getRow()
-                    && pacman.getCol() == ghosts[ghostNum].getCol()) {
+            if (pacman.getX() == ghosts[ghostNum].getX()
+                    && pacman.getY() == ghosts[ghostNum].getY()) {
                 return true;
             }
         }
@@ -236,19 +240,19 @@ public class Board {
     }
 
     public Direction ghostMove(PacCharacter ghost) {
-        int colDistance = ghost.getCol() - pacman.getCol();
-        int rowDistance = ghost.getRow() - pacman.getRow();
+        int xDistance = ghost.getX() - pacman.getX();
+        int yDistance = ghost.getY() - pacman.getY();
 
-        if(colDistance == 0 && rowDistance != 0) {
-            if (rowDistance < 0) {
+        if(xDistance == 0 && yDistance != 0) {
+            if (yDistance < 0) {
                 return Direction.DOWN;
             } else {
                 return Direction.UP;
             }
         }
         
-        else if(rowDistance == 0 && colDistance != 0) {
-            if (colDistance < 0) {
+        else if(yDistance == 0 && xDistance != 0) {
+            if (xDistance < 0) {
                 return Direction.RIGHT;
             } else {
                 return Direction.LEFT;
@@ -256,16 +260,16 @@ public class Board {
         }
 
         
-        else if (Math.abs(colDistance) < Math.abs(rowDistance)) {
-            if (colDistance < 0) {
+        else if (Math.abs(xDistance) < Math.abs(yDistance)) {
+            if (xDistance < 0) {
                 return Direction.RIGHT;
             } else {
                 return Direction.LEFT;
             }
         } 
         
-        else if (Math.abs(colDistance) > Math.abs(rowDistance)) {
-            if (rowDistance < 0) {
+        else if (Math.abs(xDistance) > Math.abs(yDistance)) {
+            if (yDistance < 0) {
                 return Direction.DOWN;
             } else {
                 return Direction.UP;
@@ -273,8 +277,8 @@ public class Board {
             
         }
         
-        else if (Math.abs(colDistance) == Math.abs(rowDistance)) {
-            if (colDistance < 0) {
+        else if (Math.abs(xDistance) == Math.abs(yDistance)) {
+            if (xDistance < 0) {
                 return Direction.RIGHT;
             } 
             else {
@@ -293,9 +297,9 @@ public class Board {
         StringBuilder outputString = new StringBuilder();
         outputString.append(String.format("Score: %d\n", this.score));
 
-        for(int row = 0; row < GRID_SIZE; row++) {
-            for(int col = 0; col < GRID_SIZE; col++) {
-                outputString.append("  " + grid[row][col] + "  ");
+        for(int y = 0; y < GRID_SIZE; y++) {
+            for(int x = 0; x < GRID_SIZE; x++) {
+                outputString.append("  " + grid[x][y] + "  ");
             }
             outputString.append("\n");
         }

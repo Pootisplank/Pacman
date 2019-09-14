@@ -1,30 +1,30 @@
 public class PacCharacter {
 
     private char appearance;
-    private int row;
-    private int col;
+    private int x;
+    private int y;
 
-    public PacCharacter(int row, int col, char appearance) {
-        this.row = row;
-        this.col = col;
+    public PacCharacter(int x, int y, char appearance) {
+        this.x = x;
+        this.y = y;
         this.appearance = appearance;
     }
 
-    public int getRow() {
-        return row;
+    public int getX() {
+        return x;
     }
 
-    public int getCol() {
-        return col;
+    public int getY() {
+        return y;
     }
 
     public char getAppearance() {
         return appearance;
     }
 
-    public void setPosition(int row, int col) {
-        this.row = row;
-        this.col = col;
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 
     public void setAppearance(char appearance) {

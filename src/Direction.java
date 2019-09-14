@@ -9,9 +9,6 @@
  */
 
 
-/** DO NOT MODIFY THIS FILE */
-
-
 /**
  * enum Direction
  *

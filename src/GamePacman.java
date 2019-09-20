@@ -29,6 +29,7 @@ public class GamePacman {
         if(gameLoadFile != null) {
             try {
               GameManager gameManager = new GameManager(gameLoadFile, gameSaveFile);
+              gameManager.play();
             } catch (Exception e) {
                 System.out.println("File not found");
             }

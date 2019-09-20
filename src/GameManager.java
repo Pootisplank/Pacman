@@ -14,26 +14,26 @@ public class GameManager {
      *
      * Purpose:   Constructs a GameManager to generate new game
      * Parameter: int boardSize - Integer that player wants to set as board size.
-     *            String outputBoard - the filename the Board will be saved as.
+     *            String saveBoard - the filename the Board will be saved as.
      *
      */
-    GameManager(int boardSize, String outputBoard) throws Exception
+    GameManager(int boardSize, String saveBoard) throws Exception
     {
         board = new Board(boardSize);
-        play();
     }
 
     /*
      * GameManager Constructor
      *
      * Purpose:   Constructs a GameManager to Load a saved game.
-     * Parameter: String inputBoard - the filename the Board will be inputted.
-     *            String outputBoard - the filename the Board will be saved as.
+     * Parameter: String loadBoard - the filename the Board will be loaded from.
+     *            String saveBoard - the filename the Board will be saved as.
      *
      */
-    GameManager(String inputBoard, String outputBoard) throws Exception
+    GameManager(String loadBoard, String saveBoard) throws Exception
     {
-        board = new Board(inputBoard);
+        board = new Board(loadBoard);
+        outputFileName = saveBoard;
         
     }
 

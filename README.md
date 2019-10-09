@@ -1,5 +1,5 @@
 # Pacman
-Rudimentary pacman game in Java featuring basic movement controls and ghost movement.
+Rudimentary pacman game in Java featuring basic movement controls and ghost movement.  Run in the command line.
 
 To run, download files, cd into the downloaded directory and:
 
